@@ -6,7 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Active_Plucgin' => $baseDir . '/app/class_active_plugin.php',
+    'App\\ActiveLicenseKey\\class_check_sample_code' => $baseDir . '/app/activeLicenseKey/class_check_sample_code.php',
+    'App\\Active_Plugin_License_Key_Whmcs' => $baseDir . '/app/class-active-plugin.php',
     'App\\Utilities\\Helpers' => $baseDir . '/app/utilities/Helpers.php',
     'App\\Utilities\\SingletonTrait' => $baseDir . '/app/utilities/SingletonTrait.php',
 );

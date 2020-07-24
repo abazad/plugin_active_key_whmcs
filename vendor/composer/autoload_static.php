@@ -21,7 +21,8 @@ class ComposerStaticInit944c64294d1b4f434626ecf2693929a2
     );
 
     public static $classMap = array (
-        'App\\Active_Plucgin' => __DIR__ . '/../..' . '/app/class_active_plugin.php',
+        'App\\ActiveLicenseKey\\class_check_sample_code' => __DIR__ . '/../..' . '/app/activeLicenseKey/class_check_sample_code.php',
+        'App\\Active_Plugin_License_Key_Whmcs' => __DIR__ . '/../..' . '/app/class-active-plugin.php',
         'App\\Utilities\\Helpers' => __DIR__ . '/../..' . '/app/utilities/Helpers.php',
         'App\\Utilities\\SingletonTrait' => __DIR__ . '/../..' . '/app/utilities/SingletonTrait.php',
     );
