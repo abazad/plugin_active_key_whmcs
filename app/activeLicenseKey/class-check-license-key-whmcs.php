@@ -1,7 +1,7 @@
 <?php
 namespace App\ActiveLicenseKey;
 
-class class_check_sample_code
+class Check_License_Key_Whmcs
 {
     public function active_check_license($licensekey, $localkey='')
     {

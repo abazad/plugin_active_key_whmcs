@@ -3,9 +3,8 @@
  * Plugin Name: Active license key
  * Plugin URI:
  * Description: Active license key for plugin
- * Author: Datpt
+ * Author: EzDeFi
  * Version: 1.0.0
- * Author URI: https://tuandat77.github.io/
  * License: GPL
  */
 
