@@ -78,14 +78,19 @@ class Active_Plugin_License_Key_Whmcs
         if( !$get_local_key_whmcs || !$get_license_key_whmcs ) {
             ob_start(); ?>
             <div class="notice notice-warning is-dismissible">
-                <p>Plugin not license key. click <a href=" <?php echo $url ?>">active license key</a> now</p>
+                <p>Plugin not license key. click
+                    <a href=" <?php echo $url ?>">active license key</a> now
+                </p>
             </div>
             <?php
+            $html_url_active = ob_get_clean();
+            echo $html_url_active;
             return;
         }
         $license_transient_expired = get_transient( 'license_key_plugin' );
         if ( !$license_transient_expired ) {
-           return $this->active_plugin_with_local_key($get_license_key_whmcs, $get_local_key_whmcs);
+           $this->active_plugin_with_local_key($get_license_key_whmcs, $get_local_key_whmcs);
+            return;
         }
     }
 
@@ -109,7 +114,9 @@ class Active_Plugin_License_Key_Whmcs
             return;
         }
 
-        return $this->active_license_success_html();
+        $html_success = $this->active_license_success_html();
+        echo $html_success;
+        return;
     }
 
     public function page_active_license_key_whmcs()
@@ -128,12 +135,13 @@ class Active_Plugin_License_Key_Whmcs
 
     public function active_license_success_html()
     {
-        ?>
-        <?php ob_start(); ?>
+        ob_start(); ?>
         <div class="notice notice-success">
                 <p>Active success license key</p>
         </div>
         <?php
+        $html_success = ob_get_clean();
+        return $html_success;
     }
 
     function handle_post_request()
@@ -144,12 +152,14 @@ class Active_Plugin_License_Key_Whmcs
 
         if ( ! isset( $_POST['form_active_license_key_whmcs'] )
             || ! wp_verify_nonce( $_POST['form_active_license_key_whmcs'], 'active_license_key_whmcs' ) ) {
-            print 'Sorry, your nonce did not verify.';
-            exit;
+            $my_errors = __( 'Sorry, your nonce did not verify.','active-license-key' );
+            set_transient( 'validation_errors_' . $user_id, $my_errors );
+            wp_redirect( $url );
+            die();
         }
 
         if ( empty( $_POST['license_key'] ) ){
-            $my_errors = 'License key cannot be empty';
+            $my_errors = __( 'License key cannot be empty','active-license-key' );
             set_transient( 'validation_errors_' . $user_id, $my_errors );
             wp_redirect( $url );
             die();
@@ -183,9 +193,9 @@ class Active_Plugin_License_Key_Whmcs
             die();
         }
         $response = $active->active_check_license( $license_key );
-        $get_local_key_whmcs = '9tjIxIzNwgDMwIjI6gjOztjIlRXYkt2Ylh2YioTO6M3OicmbpNnblNWasx1cyVmdyV2ccNXZsVHZv1GXzNWbodHXlNmc192czNWbodHXzN2bkRHacBFUNFEWcNHduVWb1N2bExFd0FWTcNnclNXVcpzQioDM4ozc7ISey9GdjVmcpRGZpxWY2JiO0EjOztjIx4CMuAjL3ITMioTO6M3OiAXaklGbhZnI6cjOztjI0N3boxWYj9Gbuc3d3xCdz9GasF2YvxmI6MjM6M3Oi4Wah12bkRWasFmdioTMxozc7ISeshGdu9WTiozN6M3OiUGbjl3Yn5WasxWaiJiOyEjOztjI3ATL4ATL4ADMyIiOwEjOztjIlRXYkVWdkRHel5mI6ETM6M3OicDMtcDMtgDMwIjI6ATM6M3OiUGdhR2ZlJnI6cjOztjIlNXYlxEI5xGa052bNByUD1ESXJiO5EjOztjIl1WYuR3Y1R2byBnI6ETM6M3OicjI6EjOztjIklGdjVHZvJHcioTO6M3Oi02bj5ycj1Ga3BEd0FWbioDNxozc7ICbpFWblJiO1ozc7IyUD1ESXBCd0FWTioDMxozc7ISZtFmbkVmclR3cpdWZyJiO0EjOztjIlZXa0NWQiojN6M3OiMXd0FGdzJiO2ozc7pjMxoTY8baca0885830a33725148e94e693f3f073294c0558d38e31f844c5e399e3c16a';
-        $response['status'] =  "Active";
-        $response['localkey'] = $get_local_key_whmcs;
+//        $get_local_key_whmcs = '9tjIxIzNwgDMwIjI6gjOztjIlRXYkt2Ylh2YioTO6M3OicmbpNnblNWasx1cyVmdyV2ccNXZsVHZv1GXzNWbodHXlNmc192czNWbodHXzN2bkRHacBFUNFEWcNHduVWb1N2bExFd0FWTcNnclNXVcpzQioDM4ozc7ISey9GdjVmcpRGZpxWY2JiO0EjOztjIx4CMuAjL3ITMioTO6M3OiAXaklGbhZnI6cjOztjI0N3boxWYj9Gbuc3d3xCdz9GasF2YvxmI6MjM6M3Oi4Wah12bkRWasFmdioTMxozc7ISeshGdu9WTiozN6M3OiUGbjl3Yn5WasxWaiJiOyEjOztjI3ATL4ATL4ADMyIiOwEjOztjIlRXYkVWdkRHel5mI6ETM6M3OicDMtcDMtgDMwIjI6ATM6M3OiUGdhR2ZlJnI6cjOztjIlNXYlxEI5xGa052bNByUD1ESXJiO5EjOztjIl1WYuR3Y1R2byBnI6ETM6M3OicjI6EjOztjIklGdjVHZvJHcioTO6M3Oi02bj5ycj1Ga3BEd0FWbioDNxozc7ICbpFWblJiO1ozc7IyUD1ESXBCd0FWTioDMxozc7ISZtFmbkVmclR3cpdWZyJiO0EjOztjIlZXa0NWQiojN6M3OiMXd0FGdzJiO2ozc7pjMxoTY8baca0885830a33725148e94e693f3f073294c0558d38e31f844c5e399e3c16a';
+//        $response['status'] =  "Active";
+//        $response['localkey'] = $get_local_key_whmcs;
         $local_key_status = $this->status_response( $response );
 
         if ( empty( $local_key_status ) ) {
@@ -210,7 +220,7 @@ class Active_Plugin_License_Key_Whmcs
         if ( empty($local_key_status) ) {
             $url = $this->get_url_page_active_license_key();
             echo '<div class="notice notice-warning is-dismissible">
-                    <p>warning : There was an error checking the license key. Click <a href="'.$url.'">active again license key</a> now</p>
+                    <p> warning : There was an error checking the license key. Click <a href="'.$url.'">active again license key</a> now</p>
                   </div>';
             return;
         }
@@ -221,7 +231,7 @@ class Active_Plugin_License_Key_Whmcs
     }
 
     function set_transient_active_key( $license ) {
-        return set_transient( 'license_key_plugin', $license, 60*60*12 );
+        return set_transient( 'license_key_plugin', $license, DAY_IN_SECONDS );
     }
 
     public function save_local_key( $local_key )
@@ -258,14 +268,14 @@ class Active_Plugin_License_Key_Whmcs
             <table class="form-table">
                 <?php wp_nonce_field('active_license_key_whmcs', 'form_active_license_key_whmcs'); ?>
                 <tr>
-                    <th scope="row"><label for="blogname"> Input license Key: </label> </th>
+                    <th scope="row"><label for="blogname"> <?php _e( 'Input license Key:','active-license-key' ) ?></label> </th>
                     <td><input id="license_key" type="text" name="license_key" class="regular-text"></td>
                 </tr>
             </table>
             <input type="hidden" name="action" value="form_input_license_key">
-            <p class="submit">
-                <input type="submit" name="submit" class="button button-primary" value="Active license key">
-            </p>
+            <?php $button_text = __( 'Active license key','active-license-key' );
+            submit_button( $button_text, 'primary', 'submit' )
+            ?>
         </form>
         <?php
         $html = ob_get_clean();
@@ -277,7 +287,7 @@ class Active_Plugin_License_Key_Whmcs
         $url        = wp_get_referer();
         $user_info  = wp_get_current_user();
         $user_id    = $user_info->exists() && !empty( $user_info->ID ) ? $user_info->ID : 0;
-        $my_errors  = 'License key invalid';
+        $my_errors  = __( 'License key invalid','active-license-key' );
         set_transient( 'validation_errors_' . $user_id, $my_errors );
         wp_redirect( $url );
         die();
